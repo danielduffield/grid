@@ -1,0 +1,12 @@
+DELAY = 100
+DURATION = 300
+
+COLUMNS = 10
+ROWS = 10
+
+module.exports = {
+  DELAY,
+  DURATION,
+  COLUMNS,
+  ROWS,
+}

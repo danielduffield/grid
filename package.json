@@ -1,0 +1,55 @@
+{
+  "name": "grid",
+  "version": "1.0.0",
+  "description": "TBD",
+  "engines": {
+    "node": "8.2.1"
+  },
+  "private": true,
+  "scripts": {
+    "bundle": "browserify client/main.js -o server/public/bundle.js",
+    "lint": "run-p lint:*",
+    "lint:html": "htmlhint ./**/*.html",
+    "lint:css": "stylelint ./**/*.css",
+    "lint:js": "eslint ./**/*.js",
+    "test": "npm run lint",
+    "precommit": "npm test",
+    "postinstall": "browserify client/main.js -o server/public/bundle.js",
+    "start": "node server/index.js",
+    "watch:client": "watchify client/main.js -v -o server/public/bundle.js",
+    "watch:server": "nodemon server/index.js",
+    "watch": "run-p watch:client watch:server"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.2",
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-standard": "10.2.1",
+    "eslint-plugin-babel": "^4.1.2",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-node": "4.2.2",
+    "eslint-plugin-promise": "3.5.0",
+    "eslint-plugin-react": "7.0.1",
+    "eslint-plugin-standard": "3.0.1",
+    "htmlhint": "^0.10.1",
+    "husky": "0.13.4",
+    "nodemon": "^1.18.7",
+    "npm-run-all": "4.0.2",
+    "stylelint": "^9.9.0",
+    "stylelint-config-standard": "16.0.0"
+  },
+  "dependencies": {
+    "archiver": "^3.0.0",
+    "body-parser": "^1.18.3",
+    "browserify": "^16.2.3",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.4",
+    "fs-extra": "^3.0.1",
+    "moment": "^2.21.0",
+    "node": "^9.7.0",
+    "request": "^2.88.0",
+    "socket.io": "^2.2.0",
+    "watchify": "^3.11.0"
+  }
+}
