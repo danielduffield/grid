@@ -22,9 +22,9 @@ const actionSignatures = [
   { pattern: layered.wipeDiagonal('southeast'), type: 'layered', isReverse: true },
 ]
 const animationTypes = [
-  // 'animate',
-  // 'animateText',
-  // 'animateTextCascade',
+  'animate',
+  'animateText',
+  'animateTextCascade',
   'animateRainbowUnravel',
 ]
 const animations = grid.flatten3dArray(
