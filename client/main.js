@@ -16,9 +16,6 @@ const nodules = $nodules.map(row => (
 const matrix = new Matrix(nodules)
 
 const actionSignatures = [
-  // () => matrix.paintFlatNodules(matrix.getColumn(x)),
-  // () => matrix.paintFlatNodules(matrix.getRow(y)),
-
   { pattern: flat.snail, type: 'flat' },
   { pattern: flat.snail, type: 'flat', isReverse: true },
   { pattern: flat.snake, type: 'flat' },
