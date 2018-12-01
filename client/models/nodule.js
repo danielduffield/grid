@@ -6,16 +6,22 @@ class Nodule {
     this.row = row
     this.column = column
     this.isActive = false
+    this.actionTimers = []
 
     $nodule.addEventListener('click', () => console.log(this))
+
+    this.addTimer = this.addTimer.bind(this)
+    this.clearTimers = this.clearTimers.bind(this)
   }
 
-  createAction() {
-    const current = this.$nodule.style.color
-    return {
-      activate: () => { this.$nodule.style.backgroundColor = 'red' },
-      revert: () => { this.$nodule.style.backgroundColor = current },
-    }
+  addTimer(timer) {
+    this.actionTimers = [...this.actionTimers, timer]
+  }
+
+  clearTimers() {
+    this.actionTimers.forEach(timer => clearTimeout(timer))
+    this.actionTimers = []
+    this.isActive = false
   }
 }
 

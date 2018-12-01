@@ -4,9 +4,8 @@ const Timeframe = require('../models/timeframe')
 const misc = require('./misc')
 const { deepRead, deepSet } = misc
 
-const createAction = (nodule, propKey, nextValue, timeframe) => {
+const createAction = (nodule, propKey, initialValue, nextValue, timeframe) => {
   const props = propKey.split('.')
-  const initialValue = deepRead(nodule.$nodule, propKey)
 
   if (initialValue) {
     const trigger = {
@@ -18,9 +17,12 @@ const createAction = (nodule, propKey, nextValue, timeframe) => {
   return null
 }
 
-const createActionSet = (nodule, propKey, valueSet, timeframe) => {
+const createActionSet = (nodule, propKey, initialValue, valueSet, timeframe) => {
   const props = propKey.split('.')
-  const initialValue = deepRead(nodule.$nodule, propKey)
+
+  if (nodule.isActive) {
+    nodule.clearTimers()
+  }
 
   const actionSequence = valueSet.map((value, i) => {
     const trigger = {
@@ -32,15 +34,11 @@ const createActionSet = (nodule, propKey, valueSet, timeframe) => {
       timeframe.delayKey * (i + 1.5) / valueSet.length,
       timeframe.duration,
     )
-    if (!nodule.isActive) {
-      return new Action(nodule, trigger, newTimeframe)
+    if (i === valueSet.length - 1) {
+      trigger.revert = () => deepSet(nodule.$nodule, propKey, initialValue)
     }
+    return new Action(nodule, trigger, newTimeframe)
   })
-  const revertToInitial = {
-    activate: () => deepSet(nodule.$nodule, propKey, initialValue),
-  }
-  const newTimeframe = new Timeframe(timeframe.delay, actionSequence.length, timeframe.duration)
-  // actionSequence.push(new Action(nodule, revertToInitial, newTimeframe))
   return actionSequence
 }
 

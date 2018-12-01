@@ -6,8 +6,7 @@ const { multiplyInnerColors } = utils.colors
 const rainbow = (nodule, timeframe) => {
   const baseColors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet', 'pink']
   const colors = multiplyInnerColors(baseColors)
-  colors.push(nodule.$nodule.style.backgroundColor || 'white')
-  createActionSet(nodule, 'style.backgroundColor', colors, timeframe)
+  createActionSet(nodule, 'style.backgroundColor', 'white', colors, timeframe)
 }
 
 module.exports = rainbow

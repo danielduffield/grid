@@ -18,12 +18,14 @@ class Action {
       this.nodule.isActive = true
       this.trigger.activate()
     }, this.timeframe.delay * this.timeframe.delayKey)
+    this.nodule.addTimer(this.actionTimer)
 
     if (this.trigger.revert) {
-      this.nodule.isActive = false
       this.revertTimer = setTimeout(() => {
+        this.nodule.clearTimers()
         this.trigger.revert()
       }, (this.timeframe.delay * this.timeframe.delayKey) + this.timeframe.duration)
+      this.nodule.addTimer(this.revertTimer)
     }
   }
 

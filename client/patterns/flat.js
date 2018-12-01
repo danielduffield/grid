@@ -9,9 +9,9 @@ const snail = (array) => {
   return vector
 }
 
-const stack = (array) => {
+const stack = (array) => (
   array.reduce((acc, cur) => ([...acc, ...cur]), [])
-}
+)
 
 const snake = (array) => (
   array.map((row, i) => i % 2 === 0 ? row : row.reverse())

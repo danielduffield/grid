@@ -16,8 +16,7 @@ class Matrix {
     this.getNodule = this.getNodule.bind(this)
     this.getNoduleFlat = this.getNoduleFlat.bind(this)
     this.paintFlatNodules = this.paintFlatNodules.bind(this)
-    this.animateSnail = this.animateSnail.bind(this)
-    this.animateSnake = this.animateSnake.bind(this)
+    this.animate = this.animate.bind(this)
   }
 
   getRow(rowNum) {
@@ -36,20 +35,20 @@ class Matrix {
     return this.flatSlicedNodules()[index]
   }
 
-  animateSnail() {
-    this.paintFlatNodules(flatPatterns.snail(this.slicedNodules()))
-  }
-
-  animateSnake() {
-    this.paintFlatNodules(flatPatterns.snake(this.slicedNodules()))
+  animate(pattern, type, isReverse) {
+    const paintMethodMap = {
+      flat: this.paintFlatNodules,
+      layered: this.paintLayerNodules,
+    }
+    const toAnimate = pattern(this.slicedNodules())
+    if (isReverse) toAnimate.reverse()
+    paintMethodMap[type](toAnimate)
   }
 
   paintFlatNodules(flatNodules) {
     flatNodules.forEach((nodule, i) => {
       const timeframe = new Timeframe(DELAY, i, DURATION)
-      // new Action(nodule, nodule.createAction(), timeframe)
       rainbow(nodule, timeframe)
-      // nodule.flash(DELAY, i, DURATION)
     })
   }
 
@@ -57,8 +56,7 @@ class Matrix {
     layerNodules.forEach((layer, i) => {
       layer.forEach(nodule => {
         const timeframe = new Timeframe(DELAY, i, DURATION)
-        new Action(nodule, nodule.createAction(), timeframe)
-        // nodule.flash(DELAY, i, DURATION)
+        rainbow(nodule, timeframe)
       })
     })
   }
