@@ -2,7 +2,7 @@ const Action = require('./action')
 const Timeframe = require('./timeframe')
 const { flat: flatPatterns, layered: layeredPatterns } = require('../patterns')
 const utils = require('../utils')
-const { rainbow, textCascade, textUnravel } = require('../animations')
+const { rainbowCascade, textCascade, textUnravel, rainbowUnravel } = require('../animations')
 const { clone3dArray } = utils.grid
 const { DELAY, DURATION } = require('../state/globals')
 
@@ -38,6 +38,16 @@ class Matrix {
   }
 
   animate(pattern, type, isReverse) {
+    const paintMethodMap = {
+      flat: this.paintFlatNodules,
+      layered: this.paintLayerNodules,
+    }
+    const toAnimate = pattern(this.slicedNodules())
+    if (isReverse) toAnimate.reverse()
+    paintMethodMap[type](toAnimate)
+  }
+
+  animateUnravel(pattern, type, isReverse) {
     const paintMethodMap = {
       flat: this.paintFlatNodules,
       layered: this.paintLayerNodules,
@@ -91,10 +101,52 @@ class Matrix {
     textUnravel(nodules, true)
   }
 
+  textFlatNodules(nodules) {
+    textUnravel(nodules)
+  }
+
+  textLayerNodules(nodules) {
+    textUnravel(nodules, true)
+  }
+
+  animateRainbowUnravel(pattern, type, isReverse) {
+    const paintMethodMap = {
+      flat: this.animateFlatPattern,
+      layered: this.animateLayerPattern,
+    }
+    const toAnimate = pattern(this.slicedNodules())
+    if (isReverse) toAnimate.reverse()
+    paintMethodMap[type](toAnimate)
+  }
+
+  animateFlatPattern(flatNodules) {
+    rainbowUnravel(flatNodules)
+  }
+
+  animateLayerPattern(layerNodules) {
+    rainbowUnravel(layerNodules, true)
+  }
+
+  animateFlat(flatNodules, animation) {
+    flatNodules.forEach((nodule, i) => {
+      const timeframe = new Timeframe(DELAY, i, DURATION)
+      animation(nodule, timeframe)
+    })
+  }
+
+  animateLayer(layerNodules, animation) {
+    layerNodules.forEach((layer, i) => {
+      layer.forEach(nodule => {
+        const timeframe = new Timeframe(DELAY, i, DURATION)
+        animation(nodule, timeframe)
+      })
+    })
+  }
+
   paintFlatNodules(flatNodules) {
     flatNodules.forEach((nodule, i) => {
       const timeframe = new Timeframe(DELAY, i, DURATION)
-      rainbow(nodule, timeframe)
+      rainbowCascade(nodule, timeframe)
     })
   }
 
@@ -102,7 +154,7 @@ class Matrix {
     layerNodules.forEach((layer, i) => {
       layer.forEach(nodule => {
         const timeframe = new Timeframe(DELAY, i, DURATION)
-        rainbow(nodule, timeframe)
+        rainbowCascade(nodule, timeframe)
       })
     })
   }

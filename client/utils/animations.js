@@ -21,7 +21,12 @@ const actionSignatures = [
   { pattern: layered.wipeDiagonal('southeast'), type: 'layered' },
   { pattern: layered.wipeDiagonal('southeast'), type: 'layered', isReverse: true },
 ]
-const animationTypes = ['animate', 'animateText', 'animateTextCascade']
+const animationTypes = [
+  // 'animate',
+  // 'animateText',
+  // 'animateTextCascade',
+  'animateRainbowUnravel',
+]
 const animations = grid.flatten3dArray(
   actionSignatures.map(signature => (
     animationTypes.map(animationType => (

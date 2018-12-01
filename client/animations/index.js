@@ -1,9 +1,11 @@
-const rainbow = require('./rainbow')
+const rainbowCascade = require('./rainbowCascade')
+const rainbowUnravel = require('./rainbowUnravel')
 const textCascade = require('./textCascade')
 const textUnravel = require('./textUnravel')
 
 module.exports = {
-  rainbow,
+  rainbowCascade,
+  rainbowUnravel,
   textCascade,
   textUnravel,
 }
