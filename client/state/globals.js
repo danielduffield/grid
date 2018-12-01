@@ -1,8 +1,8 @@
 DELAY = 100
 DURATION = 300
 
-COLUMNS = 10
-ROWS = 10
+COLUMNS = 30
+ROWS = 30
 
 module.exports = {
   DELAY,

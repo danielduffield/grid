@@ -7,14 +7,11 @@ const { deepRead, deepSet } = misc
 const createAction = (nodule, propKey, initialValue, nextValue, timeframe) => {
   const props = propKey.split('.')
 
-  if (initialValue) {
-    const trigger = {
-      activate: () => deepSet(nodule.$nodule, propKey, nextValue),
-      revert: () => deepSet(nodule.$nodule, propKey, initialValue),
-    }
-    return new Action(nodule, trigger, timeframe)
+  const trigger = {
+    activate: () => deepSet(nodule.$nodule, propKey, nextValue),
+    revert: () => deepSet(nodule.$nodule, propKey, initialValue),
   }
-  return null
+  return new Action(nodule, trigger, timeframe)
 }
 
 const createActionSet = (nodule, propKey, initialValue, valueSet, timeframe) => {

@@ -18,6 +18,12 @@ const deepRead = (object, path) => {
 
 const deepSet = (object, path, value) => {
   const keys = path.split('.')
+  if (keys.length === 1) {
+    const [property] = keys
+    object[property] = value
+    return object
+  }
+
   let currentValue = object[keys.shift()]
   while (keys.length > 1) {
     const next = keys.shift()

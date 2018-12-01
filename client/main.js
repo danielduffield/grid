@@ -15,27 +15,35 @@ const nodules = $nodules.map(row => (
 
 const matrix = new Matrix(nodules)
 
-const actions = [
+const actionSignatures = [
   // () => matrix.paintFlatNodules(matrix.getColumn(x)),
   // () => matrix.paintFlatNodules(matrix.getRow(y)),
 
-  () => matrix.animate(flat.snail, 'flat'),
-  () => matrix.animate(flat.snail, 'flat', true),
-  () => matrix.animate(flat.snake, 'flat'),
-  () => matrix.animate(flat.snake, 'flat', true),
-  () => matrix.animate(flat.stack, 'flat'),
-  () => matrix.animate(flat.stack, 'flat', true),
+  { pattern: flat.snail, type: 'flat' },
+  { pattern: flat.snail, type: 'flat', isReverse: true },
+  { pattern: flat.snake, type: 'flat' },
+  { pattern: flat.snake, type: 'flat', isReverse: true },
+  { pattern: flat.stack, type: 'flat' },
+  { pattern: flat.stack, type: 'flat', isReverse: true },
 
-  () => matrix.animate(layered.concentric, 'layered'),
-  () => matrix.animate(layered.concentric, 'layered', true),
-  () => matrix.animate(layered.wipe('down'), 'layered'),
-  () => matrix.animate(layered.wipe('up'), 'layered'),
-  () => matrix.animate(layered.wipe('right'), 'layered'),
-  () => matrix.animate(layered.wipe('left'), 'layered'),
+  { pattern: layered.concentric, type: 'layered' },
+  { pattern: layered.concentric, type: 'layered', isReverse: true },
+  { pattern: layered.wipe('down'), type: 'layered' },
+  { pattern: layered.wipe('up'), type: 'layered' },
+  { pattern: layered.wipe('right'), type: 'layered' },
+  { pattern: layered.wipe('left'), type: 'layered' },
 
-  () => matrix.animate(layered.wipeDiagonal('southeast'), 'layered'),
-  () => matrix.animate(layered.wipeDiagonal('southeast'), 'layered', true),
+  { pattern: layered.wipeDiagonal('southeast'), type: 'layered' },
+  { pattern: layered.wipeDiagonal('southeast'), type: 'layered', isReverse: true },
 ]
+const animationTypes = ['animate', 'animateText', 'animateTextCascade']
+const actions = utils.grid.flatten3dArray(
+  actionSignatures.map(signature => (
+    animationTypes.map(animationType => (
+      () => matrix[animationType](signature.pattern, signature.type, signature.isReverse)
+    ))
+  ))
+)
 
 document.body.addEventListener('click', (e) => {
   actions[utils.misc.getRandomInt(actions.length)]()
