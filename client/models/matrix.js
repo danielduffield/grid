@@ -19,6 +19,13 @@ class Matrix {
     this.animate = this.animate.bind(this)
     this.animateText = this.animateText.bind(this)
     this.animateTextCascade = this.animateTextCascade.bind(this)
+    this.appendNodules = this.appendNodules.bind(this)
+  }
+
+  appendNodules($container) {
+    this.nodules.forEach((row) => (
+      row.forEach(nodule => $container.appendChild(nodule.$nodule))
+    ))
   }
 
   getRow(rowNum) {
