@@ -4,33 +4,40 @@ const patterns = require('../patterns')
 const { flat, layered } = patterns
 
 const actionSignatures = [
-  { pattern: flat.snail, type: 'flat' },
-  { pattern: flat.snail, type: 'flat', isReverse: true },
-  { pattern: flat.snake, type: 'flat' },
-  { pattern: flat.snake, type: 'flat', isReverse: true },
-  { pattern: flat.stack, type: 'flat' },
-  { pattern: flat.stack, type: 'flat', isReverse: true },
+  { pattern: flat.snail },
+  { pattern: flat.snail, isReverse: true },
+  { pattern: flat.snake },
+  { pattern: flat.snake, isReverse: true },
+  { pattern: flat.stack },
+  { pattern: flat.stack, isReverse: true },
 
-  { pattern: layered.concentric, type: 'layered' },
-  { pattern: layered.concentric, type: 'layered', isReverse: true },
-  { pattern: layered.wipe('down'), type: 'layered' },
-  { pattern: layered.wipe('up'), type: 'layered' },
-  { pattern: layered.wipe('right'), type: 'layered' },
-  { pattern: layered.wipe('left'), type: 'layered' },
+  { pattern: layered.concentric, isLayered: true },
+  { pattern: layered.concentric, isLayered: true, isReverse: true },
+  { pattern: layered.wipe('down'), isLayered: true },
+  { pattern: layered.wipe('up'), isLayered: true },
+  { pattern: layered.wipe('right'), isLayered: true },
+  { pattern: layered.wipe('left'), isLayered: true },
 
-  { pattern: layered.wipeDiagonal('southeast'), type: 'layered' },
-  { pattern: layered.wipeDiagonal('southeast'), type: 'layered', isReverse: true },
+  { pattern: layered.wipeDiagonal('southeast'), isLayered: true },
+  { pattern: layered.wipeDiagonal('southeast'), isLayered: true, isReverse: true },
 ]
 const animationTypes = [
-  'animate',
-  'animateText',
-  'animateTextCascade',
-  'animateRainbowUnravel',
+  'rainbowCascade',
+  'rainbowUnravel',
+  'textCascade',
+  'textUnravel',
 ]
 const animations = grid.flatten3dArray(
   actionSignatures.map(signature => (
     animationTypes.map(animationType => (
-      (matrix) => matrix[animationType](signature.pattern, signature.type, signature.isReverse)
+      (matrix) => matrix.animate(
+        signature.pattern,
+        animationType,
+        {
+          isLayered: signature.isLayered || false,
+          isReverse: signature.isReverse,
+        },
+      )
     ))
   ))
 )

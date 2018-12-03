@@ -15,10 +15,7 @@ class Matrix {
     this.getColumn = this.getColumn.bind(this)
     this.getNodule = this.getNodule.bind(this)
     this.getNoduleFlat = this.getNoduleFlat.bind(this)
-    this.paintFlatNodules = this.paintFlatNodules.bind(this)
     this.animate = this.animate.bind(this)
-    this.animateText = this.animateText.bind(this)
-    this.animateTextCascade = this.animateTextCascade.bind(this)
     this.appendNodules = this.appendNodules.bind(this)
   }
 
@@ -44,126 +41,30 @@ class Matrix {
     return this.flatSlicedNodules()[index]
   }
 
-  animate(pattern, type, isReverse) {
-    const paintMethodMap = {
-      flat: this.paintFlatNodules,
-      layered: this.paintLayerNodules,
+  animate(pattern, animation, options) {
+    const { isReverse, isLayered } = options
+    const renderMethodMap = {
+      rainbowCascade,
+      rainbowUnravel,
+      textCascade,
+      textUnravel,
     }
     const toAnimate = pattern(this.slicedNodules())
     if (isReverse) toAnimate.reverse()
-    paintMethodMap[type](toAnimate)
-  }
 
-  animateUnravel(pattern, type, isReverse) {
-    const paintMethodMap = {
-      flat: this.paintFlatNodules,
-      layered: this.paintLayerNodules,
-    }
-    const toAnimate = pattern(this.slicedNodules())
-    if (isReverse) toAnimate.reverse()
-    paintMethodMap[type](toAnimate)
-  }
-
-  animateText(pattern, type, isReverse) {
-    const textMethodMap = {
-      flat: this.textFlatNodules,
-      layered: this.textLayerNodules,
-    }
-    const toAnimate = pattern(this.slicedNodules())
-    textMethodMap[type](toAnimate)
-  }
-
-  animateTextCascade(pattern, type, isReverse) {
-    const paintMethodMap = {
-      flat: this.textCascadeFlatNodules,
-      layered: this.textCascadeLayerNodules,
-    }
-    const toAnimate = pattern(this.slicedNodules())
-    if (isReverse) toAnimate.reverse()
-    paintMethodMap[type](toAnimate)
-  }
-
-  textCascadeFlatNodules(flatNodules) {
-    flatNodules.forEach((nodule, i) => {
-      const timeframe = new Timeframe(DELAY, i, DURATION)
-      textCascade(nodule, timeframe)
-    })
-
-  }
-
-  textCascadeLayerNodules(layerNodules) {
-    layerNodules.forEach((layer, i) => {
-      layer.forEach(nodule => {
-        const timeframe = new Timeframe(DELAY, i, DURATION)
-        textCascade(nodule, timeframe)
+    if (options.isLayered) {
+      toAnimate.forEach((layer, i) => {
+        layer.forEach(nodule => {
+          const timeframe = new Timeframe(DELAY, i, DURATION)
+          renderMethodMap[animation](nodule, timeframe)
+        })
       })
-    })
-  }
-
-  textFlatNodules(nodules) {
-    textUnravel(nodules)
-  }
-
-  textLayerNodules(nodules) {
-    textUnravel(nodules, true)
-  }
-
-  textFlatNodules(nodules) {
-    textUnravel(nodules)
-  }
-
-  textLayerNodules(nodules) {
-    textUnravel(nodules, true)
-  }
-
-  animateRainbowUnravel(pattern, type, isReverse) {
-    const paintMethodMap = {
-      flat: this.animateFlatPattern,
-      layered: this.animateLayerPattern,
+    } else {
+      toAnimate.forEach((nodule, i) => {
+        const timeframe = new Timeframe(DELAY, i, DURATION)
+        renderMethodMap[animation](nodule, timeframe)
+      })
     }
-    const toAnimate = pattern(this.slicedNodules())
-    if (isReverse) toAnimate.reverse()
-    paintMethodMap[type](toAnimate)
-  }
-
-  animateFlatPattern(flatNodules) {
-    rainbowUnravel(flatNodules)
-  }
-
-  animateLayerPattern(layerNodules) {
-    rainbowUnravel(layerNodules, true)
-  }
-
-  animateFlat(flatNodules, animation) {
-    flatNodules.forEach((nodule, i) => {
-      const timeframe = new Timeframe(DELAY, i, DURATION)
-      animation(nodule, timeframe)
-    })
-  }
-
-  animateLayer(layerNodules, animation) {
-    layerNodules.forEach((layer, i) => {
-      layer.forEach(nodule => {
-        const timeframe = new Timeframe(DELAY, i, DURATION)
-        animation(nodule, timeframe)
-      })
-    })
-  }
-
-  paintFlatNodules(flatNodules) {
-    flatNodules.forEach((nodule, i) => {
-      const timeframe = new Timeframe(DELAY, i, DURATION)
-      rainbowCascade(nodule, timeframe)
-    })
-  }
-
-  paintLayerNodules(layerNodules) {
-    layerNodules.forEach((layer, i) => {
-      layer.forEach(nodule => {
-        const timeframe = new Timeframe(DELAY, i, DURATION)
-        rainbowCascade(nodule, timeframe)
-      })
-    })
   }
 
   slicedNodules() {
