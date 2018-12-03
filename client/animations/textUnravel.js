@@ -5,7 +5,7 @@ const { multiplyInnerColors } = utils.colors
 const { DELAY, DURATION } = require('../state/globals')
 
 const textUnravel = (nodules, isLayered) => {
-  const text = 'All work and no play makes Jack a dull boy.'
+  const text = 'All work and no play makes Jack a dull boy. '
 
   if (isLayered) {
     nodules.forEach((layer, i) => {
