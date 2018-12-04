@@ -5,6 +5,8 @@ const utils = require('../utils')
 const {
   borderCascade,
   borderUnravel,
+  circlesCascade,
+  circlesUnravel,
   rainbowCascade,
   textCascade,
   textUnravel,
@@ -53,6 +55,8 @@ class Matrix {
     const renderMethodMap = {
       borderCascade,
       borderUnravel,
+      circlesCascade,
+      circlesUnravel,
       rainbowCascade,
       rainbowUnravel,
       textCascade,
