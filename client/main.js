@@ -16,4 +16,8 @@ document.body.addEventListener('click', (e) => {
   utils.animations.triggerRandomAnimation(matrix)
 })
 
+// setInterval(() => {
+//   utils.animations.triggerRandomAnimation(matrix)
+// }, 10000)
+
 window.onload = () => document.hasFocus() ? null : window.focus()

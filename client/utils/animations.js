@@ -22,12 +22,14 @@ const actionSignatures = [
   { pattern: layered.wipeDiagonal('southeast'), isLayered: true, isReverse: true },
 ]
 const animationTypes = [
+  'borderCascade',
+  'borderUnravel',
   'rainbowCascade',
   'rainbowUnravel',
   'textCascade',
   'textUnravel',
 ]
-const animations = grid.flatten3dArray(
+const animationsCombos = grid.flatten3dArray(
   actionSignatures.map(signature => (
     animationTypes.map(animationType => (
       (matrix) => matrix.animate(
@@ -43,10 +45,10 @@ const animations = grid.flatten3dArray(
 )
 
 const triggerRandomAnimation = (matrix) => {
-  animations[misc.getRandomInt(animations.length)](matrix)
+  animationsCombos[misc.getRandomInt(animationsCombos.length)](matrix)
 }
 
 module.exports = {
-  animations,
+  animationsCombos,
   triggerRandomAnimation,
 }

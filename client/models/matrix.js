@@ -2,7 +2,14 @@ const Action = require('./action')
 const Timeframe = require('./timeframe')
 const { flat: flatPatterns, layered: layeredPatterns } = require('../patterns')
 const utils = require('../utils')
-const { rainbowCascade, textCascade, textUnravel, rainbowUnravel } = require('../animations')
+const {
+  borderCascade,
+  borderUnravel,
+  rainbowCascade,
+  textCascade,
+  textUnravel,
+  rainbowUnravel,
+} = require('../animations')
 const { clone3dArray } = utils.grid
 const { DELAY, DURATION } = require('../state/globals')
 
@@ -44,6 +51,8 @@ class Matrix {
   animate(pattern, animation, options) {
     const { isReverse, isLayered } = options
     const renderMethodMap = {
+      borderCascade,
+      borderUnravel,
       rainbowCascade,
       rainbowUnravel,
       textCascade,
