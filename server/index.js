@@ -9,10 +9,6 @@ const { express, app, server } = require('./utils/serverApp')
 
 const minutes = 60 * 1000
 
-setInterval(() => {
-  queue = updateQueue(queue)
-}, 5 * minutes)
-
 app.use(jsonParser)
 app.use(express.static('server/public'))
 app.use('/download', express.static('server/downloaded'))
