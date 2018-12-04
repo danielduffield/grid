@@ -18,7 +18,7 @@ matrix.appendNodules(document.body)
 
 function randomIntervalAnimation() {
   utils.animations.triggerRandomAnimation(matrix)
-  const delay = (5 + utils.misc.getRandomInt(10)) * 1000
+  const delay = (5 + utils.misc.getRandomInt(5)) * 1000
   setTimeout(randomIntervalAnimation, delay)
 }
 
