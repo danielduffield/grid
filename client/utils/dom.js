@@ -20,6 +20,7 @@ const generateElementGrid = (colCount, rowCount) => (
         {
           height: `calc(100vh / ${ROWS})`,
           width: `${100 / COLUMNS}%`,
+          border: '2px solid white',
           float: 'left',
           textAlign: 'center',
           fontFamily: 'monospace',

@@ -6,19 +6,17 @@ const { deepRead, deepSet } = misc
 
 const createAction = (nodule, propKey, initialValue, nextValue, timeframe) => {
   const props = propKey.split('.')
-
   const trigger = {
     activate: () => deepSet(nodule.$nodule, propKey, nextValue),
     revert: () => deepSet(nodule.$nodule, propKey, initialValue),
   }
-  return new Action(nodule, trigger, timeframe)
+  return new Action(nodule, trigger, timeframe, propKey)
 }
 
 const createActionSet = (nodule, propKey, initialValue, valueSet, timeframe) => {
   const props = propKey.split('.')
-
-  if (nodule.isActive) {
-    nodule.clearTimers()
+  if (nodule.isActive(propKey)) {
+    nodule.clearTimers(propKey)
   }
 
   const actionSequence = valueSet.map((value, i) => {
@@ -34,7 +32,7 @@ const createActionSet = (nodule, propKey, initialValue, valueSet, timeframe) => 
     if (i === valueSet.length - 1) {
       trigger.revert = () => deepSet(nodule.$nodule, propKey, initialValue)
     }
-    return new Action(nodule, trigger, newTimeframe)
+    return new Action(nodule, trigger, newTimeframe, propKey)
   })
   return actionSequence
 }

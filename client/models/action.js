@@ -1,11 +1,12 @@
 class Action {
-  constructor(nodule, trigger, timeframe) {
+  constructor(nodule, trigger, timeframe, propKey) {
     this.nodule = nodule
     this.trigger = trigger
     this.timeframe = timeframe
+    this.propKey = propKey
 
-    this.actionTimer = null
-    this.revertTimer = null
+    this.actionTimers = {}
+    this.revertTimers = {}
 
     this.activate = this.activate.bind(this)
     this.deactivate = this.deactivate.bind(this)
@@ -14,26 +15,25 @@ class Action {
   }
 
   activate() {
-    this.actionTimer = setTimeout(() => {
-      this.nodule.isActive = true
+    this.actionTimers[this.propKey] = setTimeout(() => {
       this.trigger.activate()
     }, this.timeframe.delay * this.timeframe.delayKey)
-    this.nodule.addTimer(this.actionTimer)
+    this.nodule.addTimer(this.actionTimers[this.propKey], this.propKey)
 
     if (this.trigger.revert) {
-      this.revertTimer = setTimeout(() => {
-        this.nodule.clearTimers()
+      this.revertTimers[this.propKey] = setTimeout(() => {
+        this.nodule.clearTimers(this.propKey)
         this.trigger.revert()
       }, (this.timeframe.delay * this.timeframe.delayKey) + this.timeframe.duration)
-      this.nodule.addTimer(this.revertTimer)
+      this.nodule.addTimer(this.revertTimers[this.propKey], this.propKey)
     }
   }
 
   deactivate() {
-    clearTimeout(actionTimer)
-    this.actionTimer = null
-    clearTimeout(revertTimer)
-    this.revertTimer = null
+    clearTimeout(actionTimers[this.propKey], this.propKey)
+    this.actionTimers[this.propKey] = null
+    clearTimeout(revertTimers[this.propKey], this.propKey)
+    this.revertTimers[this.propKey] = null
   }
 }
 
