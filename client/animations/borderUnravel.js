@@ -7,7 +7,6 @@ const { DELAY, DURATION } = require('../state/globals')
 const borderUnravel = (nodule, timeframe) => {
   const baseColors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet', 'pink']
   const colors = multiplyInnerColors(baseColors)
-  nodule.$nodule.style.border = '2px solid white'
   createAction(nodule, 'style.borderColor', 'white', colors[timeframe.delayKey % colors.length], timeframe)
 }
 
