@@ -24,8 +24,12 @@ const actionSignatures = [
 const animationTypes = [
   'borderCascade',
   'borderUnravel',
+  'boxShadowCascade',
+  'boxShadowUnravel',
   'circlesCascade',
   'circlesUnravel',
+  'fontColorCascade',
+  'fontColorUnravel',
   'rainbowCascade',
   'rainbowUnravel',
   'textCascade',
