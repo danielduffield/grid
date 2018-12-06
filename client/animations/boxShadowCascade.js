@@ -3,10 +3,10 @@ const { Timeframe } = require('../models')
 const { createAction, createActionSet } = utils.actions
 const { multiplyInnerColors } = utils.colors
 
-const borderCascade = (nodule, timeframe) => {
+const boxShadowCascade = (nodule, timeframe) => {
   const baseColors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet', 'pink', 'white']
-  const colors = multiplyInnerColors(baseColors)
-  createActionSet(nodule, 'style.borderColor', 'white', colors, timeframe)
+  const colors = multiplyInnerColors(baseColors).map(color => `10px 10px 10px ${color}`)
+  createActionSet(nodule, 'style.boxShadow', 'none', colors, timeframe)
 }
 
-module.exports = borderCascade
+module.exports = boxShadowCascade

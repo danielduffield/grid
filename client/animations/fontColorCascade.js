@@ -3,10 +3,10 @@ const { Timeframe } = require('../models')
 const { createAction, createActionSet } = utils.actions
 const { multiplyInnerColors } = utils.colors
 
-const borderCascade = (nodule, timeframe) => {
+const fontColorCascade = (nodule, timeframe) => {
   const baseColors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet', 'pink', 'white']
   const colors = multiplyInnerColors(baseColors)
-  createActionSet(nodule, 'style.borderColor', 'white', colors, timeframe)
+  createActionSet(nodule, 'style.color', 'black', colors, timeframe)
 }
 
-module.exports = borderCascade
+module.exports = fontColorCascade
