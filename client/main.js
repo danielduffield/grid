@@ -18,10 +18,10 @@ matrix.appendNodules(document.body)
 
 function randomIntervalAnimation() {
   utils.animations.triggerRandomAnimation(matrix)
-  const delay = (5 + utils.misc.getRandomInt(5)) * 1000
+  const delay = 2000
   setTimeout(randomIntervalAnimation, delay)
 }
 
-setTimeout(randomIntervalAnimation, 5000)
+setTimeout(randomIntervalAnimation, 2000)
 
 window.onload = () => document.hasFocus() ? null : window.focus()
