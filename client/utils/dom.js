@@ -1,12 +1,19 @@
 const miscUtils = require('./misc')
 const { generateArrayOfNums } = miscUtils
 
-const createElement = (type, klass, attributes, styles, children) => {
+const createElement = (type, text, attributes, styles, children) => {
   const $el = document.createElement(type)
-  $el.classList.add(klass)
-  Object.keys(attributes).forEach(attr => $el.setAttribute(attr, attributes[attr]))
-  children.forEach(child => $el.appendChild(child))
-  Object.keys(styles).forEach(style => $el.style[style] = styles[style])
+
+  if (text) $el.textContent = text
+  if (attributes) {
+    Object.keys(attributes).forEach(attr => $el.setAttribute(attr, attributes[attr]))
+  }
+  if (styles) {
+    Object.keys(styles).forEach(style => $el.style[style] = styles[style])
+  }
+  if (children) {
+    children.forEach(child => $el.appendChild(child))
+  }
   return $el
 }
 
