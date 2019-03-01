@@ -1,4 +1,3 @@
-const Action = require('./action')
 const Timeframe = require('./timeframe')
 const { flat: flatPatterns, layered: layeredPatterns } = require('../patterns')
 const utils = require('../utils')
@@ -16,26 +15,32 @@ const {
   textUnravel,
   rainbowUnravel,
 } = require('../animations')
-const { clone3dArray } = utils.grid
 const { DELAY, DURATION } = require('../state/globals')
 
 class Matrix {
-  constructor(nodules) {
+  constructor(nodules, $root) {
     this.nodules = nodules
+    this.$root = $root
 
     this.slicedNodules = this.slicedNodules.bind(this)
     this.getRow = this.getRow.bind(this)
     this.getColumn = this.getColumn.bind(this)
     this.getNodule = this.getNodule.bind(this)
     this.getNoduleFlat = this.getNoduleFlat.bind(this)
-    this.animate = this.animate.bind(this)
-    this.appendNodules = this.appendNodules.bind(this)
+
+    this.create$container = this.create$container.bind(this)
+    this.generateNextFrame = this.generateNextFrame.bind(this)
+    this.append$container = this.append$container.bind(this)
+    this.purge = this.purge.bind(this)
+    this.render = this.render.bind(this)
   }
 
-  appendNodules($container) {
-    this.nodules.forEach((row) => (
-      row.forEach(nodule => $container.appendChild(nodule.$nodule))
-    ))
+  slicedNodules() {
+    return utils.grid.clone3dArray(this.nodules)
+  }
+
+  flatSlicedNodules() {
+    return utils.grid.flatten3dArray(this.slicedNodules())
   }
 
   getRow(rowNum) {
@@ -53,47 +58,42 @@ class Matrix {
   getNoduleFlat(index) {
     return this.flatSlicedNodules()[index]
   }
-
-  animate(pattern, animation, options) {
-    const { isReverse, isLayered } = options
-    const renderMethodMap = {
-      borderCascade,
-      borderUnravel,
-      boxShadowCascade,
-      boxShadowUnravel,
-      circlesCascade,
-      circlesUnravel,
-      fontColorCascade,
-      fontColorUnravel,
-      rainbowCascade,
-      rainbowUnravel,
-      textCascade,
-      textUnravel,
+  create$container() {
+      const $container = utils.dom.createElement('div')
+      this.$container = $container
+      return $container
     }
-    const toAnimate = pattern(this.slicedNodules())
-    if (isReverse) toAnimate.reverse()
 
-    if (options.isLayered) {
-      toAnimate.forEach((layer, i) => {
-        layer.forEach(nodule => {
-          const timeframe = new Timeframe(DELAY, i, DURATION)
-          renderMethodMap[animation](nodule, timeframe)
-        })
+  generateNextFrame() {
+    const $container = this.create$container()
+    const $nodules = this.nodules.map(row => (
+      row.map(nodule => (
+        nodule.render()
+      ))
+    ))
+    $nodules.forEach(row => {
+      row.forEach($nodule => {
+        $container.appendChild($nodule)
       })
-    } else {
-      toAnimate.forEach((nodule, i) => {
-        const timeframe = new Timeframe(DELAY, i, DURATION)
-        renderMethodMap[animation](nodule, timeframe)
-      })
-    }
+    })
+    return $container
   }
 
-  slicedNodules() {
-    return clone3dArray(this.nodules)
+  append$container($container) {
+    this.$root.appendChild($container)
   }
 
-  flatSlicedNodules() {
-    return flatten3dArray(this.slicedNodules())
+  purge() {
+    if (this.$container) {
+      this.$container.remove()
+    }
+    this.$container = null
+  }
+
+  render() {
+    this.purge()
+    const nextFrame = this.generateNextFrame()
+    this.append$container(nextFrame)
   }
 }
 
