@@ -4,9 +4,12 @@ DURATION = 300
 COLUMNS = 30
 ROWS = 30
 
+FPS = 15
+
 module.exports = {
+  COLUMNS,
   DELAY,
   DURATION,
-  COLUMNS,
+  FPS,
   ROWS,
 }
